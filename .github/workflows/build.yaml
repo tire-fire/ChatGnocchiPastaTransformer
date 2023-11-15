@@ -32,7 +32,7 @@ jobs:
       run: Compress-Archive -Path "bin/*,combined.txt" -DestinationPath ChatGnocchiPastaTransformer.zip
 
     - name: List files in the directory
-      run: ls -l
+      run: ls
 
     - name: Create Release
       id: create_release
