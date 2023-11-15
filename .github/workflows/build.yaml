@@ -27,7 +27,7 @@ jobs:
       run: msbuild ChatGnocchiPastaTransformer.csproj /p:Configuration=Release /p:TargetFrameworkVersion=v3.5
 
     - name: Zip Application for IIS
-      run: Compress-Archive -Path bin/* -Path combined.txt -DestinationPath ChatGnocchiPastaTransformer.zip
+      run: Compress-Archive -Path "bin/*,combined.txt" -DestinationPath ChatGnocchiPastaTransformer.zip
 
     - name: Create Release
       id: create_release
