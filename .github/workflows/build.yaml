@@ -8,26 +8,29 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: windows-2019
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET 3.5
-      run: |
-        dism.exe /Online /Enable-Feature /FeatureName:NetFx3 /All
-
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Enable .NET Framework 3.5
+      run: |
+        dism.exe /Online /Enable-Feature /FeatureName:NetFx3 /All
 
-    - name: Publish
-      run: dotnet publish --no-build --configuration Release --output publish
+    - name: Setup MSBuild Path
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Restore NuGet packages
+      run: nuget restore ChatGnocchiPastaTransformer.sln
+
+    - name: Build the project
+      run: msbuild ChatGnocchiPastaTransformer.csproj /p:Configuration=Release /p:TargetFrameworkVersion=v3.5
 
     - name: Zip Application for IIS
-      run: Compress-Archive -Path publish/* -DestinationPath app.zip
+      run: Compress-Archive -Path publish/* -DestinationPath ChatGnocchiPastaTransformer.zip
 
     - name: Create Release
       id: create_release
@@ -46,6 +49,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app.zip
-        asset_name: app.zip
+        asset_path: ./ChatGnocchiPastaTransformer.zip
+        asset_name: ChatGnocchiPastaTransformer.zip
         asset_content_type: application/zip
