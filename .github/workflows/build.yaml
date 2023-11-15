@@ -32,6 +32,8 @@ jobs:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
+      permissions:
+        contents: write
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -42,6 +44,8 @@ jobs:
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
+      permissions:
+        contents: write
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
