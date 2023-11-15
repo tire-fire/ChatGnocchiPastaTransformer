@@ -13,9 +13,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Restore dependencies
-      run: dotnet restore
-
     - name: Enable .NET Framework 3.5
       run: |
         dism.exe /Online /Enable-Feature /FeatureName:NetFx3 /All
