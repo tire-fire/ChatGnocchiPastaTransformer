@@ -31,6 +31,9 @@ jobs:
     - name: Zip Application for IIS
       run: Compress-Archive -Path "bin/*,combined.txt" -DestinationPath ChatGnocchiPastaTransformer.zip
 
+    - name: List files in the directory
+      run: ls -l
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
