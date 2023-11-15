@@ -28,29 +28,13 @@ jobs:
     - name: Build the project
       run: msbuild ChatGnocchiPastaTransformer.csproj /p:Configuration=Release /p:TargetFrameworkVersion=v3.5
 
-    - name: Zip Application for IIS
-      run: Compress-Archive -Path "bin/*,combined.txt" -DestinationPath ChatGnocchiPastaTransformer.zip
-
-    - name: List files in the directory
-      run: ls
-
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        tag_name: v1.0
-        release_name: Release v1.0
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./ChatGnocchiPastaTransformer.zip
-        asset_name: ChatGnocchiPastaTransformer.zip
-        asset_content_type: application/zip
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            combined.txt
+            ./bin/*
