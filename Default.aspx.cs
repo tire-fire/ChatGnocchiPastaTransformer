@@ -13,6 +13,12 @@ namespace ChatGnocchiPastaTransformer
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // If the user is not logged in, redirect to the login page
+            if (Session["username"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
             if (!IsPostBack || Session["history"] == null)
             {
                 Session["history"] = history;
